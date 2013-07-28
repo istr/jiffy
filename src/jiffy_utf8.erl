@@ -5,6 +5,7 @@
 -export([fix/1]).
 
 
+-spec fix(_) -> any().
 fix({Props}) ->
     fix_props(Props, []);
 fix(Values) when is_list(Values) ->
@@ -15,6 +16,7 @@ fix(Val) ->
     Val.
 
 
+-spec fix_props([{_,_}],[{_,_}]) -> {[{_,_}]}.
 fix_props([], Acc) ->
     {lists:reverse(Acc)};
 fix_props([{K0, V0} | Rest], Acc) ->
@@ -23,6 +25,7 @@ fix_props([{K0, V0} | Rest], Acc) ->
     fix_props(Rest, [{K, V} | Acc]).
 
 
+-spec fix_array([any()],[any()]) -> [any()].
 fix_array([], Acc) ->
     lists:reverse(Acc);
 fix_array([Val | Rest], Acc0) ->
@@ -30,6 +33,7 @@ fix_array([Val | Rest], Acc0) ->
     fix_array(Rest, Acc).
 
 
+-spec fix_bin(binary()) -> binary().
 fix_bin(Bin) ->
     Dec0 = loose_decode(Bin, 0, []),
     Dec1 = try_combining(Dec0, []),
@@ -37,6 +41,7 @@ fix_bin(Bin) ->
     list_to_binary(xmerl_ucs:to_utf8(Dec2)).
 
 
+-spec loose_decode(binary(),non_neg_integer(),[non_neg_integer()]) -> [non_neg_integer()].
 loose_decode(Bin, O, Acc) ->
     case Bin of
         <<_:O/binary>> ->
@@ -71,6 +76,7 @@ loose_decode(Bin, O, Acc) ->
     end.
 
 
+-spec count_continuation_bytes(binary(),non_neg_integer()) -> non_neg_integer().
 count_continuation_bytes(R, O) ->
     case R of
         <<_:O/binary, 2:2/integer, _:6/integer, _/binary>> ->
@@ -80,6 +86,7 @@ count_continuation_bytes(R, O) ->
     end.
 
 
+-spec try_combining([non_neg_integer()],[any()]) -> [any()].
 try_combining([], Acc) ->
     lists:reverse(Acc);
 try_combining([H, L | Rest], Acc) when H >= 16#D800, H =< 16#DFFF,
@@ -95,6 +102,7 @@ try_combining([C | Rest], Acc) ->
     try_combining(Rest, [C | Acc]).
 
 
+-spec replace_garbage([any()],[any()]) -> [any()].
 replace_garbage([], Acc) ->
     lists:reverse(Acc);
 replace_garbage([C | Rest], Acc) ->
