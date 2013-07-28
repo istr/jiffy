@@ -107,7 +107,7 @@ init() ->
     erlang:load_nif(filename:join(PrivDir, "jiffy"), 0).
 
 
--spec not_loaded(103 | 106) -> any().
+-spec not_loaded(116 | 120) -> any().
 not_loaded(Line) ->
     erlang:nif_error({not_loaded, [{module, ?MODULE}, {line, Line}]}).
 
