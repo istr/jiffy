@@ -13,7 +13,7 @@ ErlOpts = {erl_opts, [
 
 Proper = [
     {proper, ".*", {git, "https://github.com/istr/proper.git",
-        {tag, "2ca4a814010eaa69d0384e785c45385f4aa705cb"}}}
+        {tag, "5089d25b36063f64d2d173036919945b18f72ec9"}}}
 ],
 
 ConfigPath = filename:dirname(SCRIPT),
